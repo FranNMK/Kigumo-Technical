@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kigumo Technical And Vocational College</title>
+    <link rel="shortcut icon" href="FrontEnd/images/fav.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Support nested dropdowns (submenu) in Bootstrap 5 */
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -0.125rem;
+        }
+
+        /* Open dropdowns on hover for desktop */
+        @media (min-width: 992px) {
+            .navbar .dropdown:hover > .dropdown-menu {
+                display: block;
+            }
+            .navbar .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- top logo & name -->
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="FrontEnd/images/official_logo.jpg" alt="Logo" width="30" height="24"
+                    class="d-inline-block align-text-top">
+                Kigumo Technical And Vocational College
+            </a>
+        </div>
+    </nav>
+
+    <!-- main nav-bar -->
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <!-- About with submenu for Administration -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">About Kigumo TVC</a></li>
+                            <li><a class="dropdown-item" href="#">Service Charter</a></li>
+                            <li><a class="dropdown-item" href="#">QMS</a></li>
+                            <li><a class="dropdown-item" href="#">Vision &amp; Mission</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Administration</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Board of Manangement</a></li>
+                                    <li><a class="dropdown-item" href="#">Chief Principal</a></li>
+                                    <li><a class="dropdown-item" href="#">Deputy Principal acdemics</a></li>
+                                    <li><a class="dropdown-item" href="#">Deputy Principal Administartion</a></li>
+                                    <li><a class="dropdown-item" href="#">Dean of Students</a></li>
+                                    <li><a class="dropdown-item" href="#">Head of Departments / HOS</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Departments with Academic and Non Academic submenus -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Departments</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Academic</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">ICT</a></li>
+                                    <li><a class="dropdown-item" href="#">Agriculture</a></li>
+                                    <li><a class="dropdown-item" href="#">Mechanical</a></li>
+                                    <li><a class="dropdown-item" href="#">Building &amp; Construction</a></li>
+                                    <li><a class="dropdown-item" href="#">Electrical &amp; Eletronics</a></li>
+                                    <li><a class="dropdown-item" href="#">Hospitality</a></li>
+                                    <li><a class="dropdown-item" href="#">Cosmetology</a></li>
+                                    <li><a class="dropdown-item" href="#">Fashion &amp; Design</a></li>
+                                </ul>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Non Academic</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Board of Manangement</a></li>
+                                    <li><a class="dropdown-item" href="#">Sports</a></li>
+                                    <li><a class="dropdown-item" href="#">Guidance &amp; Counselling</a></li>
+                                    <li><a class="dropdown-item" href="#">Science</a></li>
+                                    <li><a class="dropdown-item" href="#">Marketing &amp; Advertisement</a></li>
+                                    <li><a class="dropdown-item" href="#">Music</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Top-level tabs -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">News &amp; Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact us</a>
+                    </li>
+                </ul>
+                <form class="d-flex ms-auto" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- /  carouse / -->
+
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="FrontEnd/images/school1.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="FrontEnd/images/adm1.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="FrontEnd/images/tra1.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="FrontEnd/images/tree planting 1.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+
+<script>
+    // Minimal JS to enable nested dropdowns (submenu) on click in Bootstrap 5
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.dropdown-submenu .dropdown-toggle').forEach(function (el) {
+            el.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const submenu = el.nextElementSibling;
+                if (submenu && submenu.classList.contains('dropdown-menu')) {
+                    submenu.classList.toggle('show');
+                }
+                const parentMenu = el.closest('.dropdown-menu');
+                if (parentMenu) {
+                    parentMenu.querySelectorAll('.dropdown-menu.show').forEach(function (openSubmenu) {
+                        if (openSubmenu !== submenu) {
+                            openSubmenu.classList.remove('show');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Hide any open submenus when parent dropdown closes
+        document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+            dropdown.addEventListener('hide.bs.dropdown', function () {
+                this.querySelectorAll('.dropdown-menu.show').forEach(function (submenu) {
+                    submenu.classList.remove('show');
+                });
+            });
+        });
+
+        // Enable hover to open/close dropdowns on desktop only
+        if (window.matchMedia('(min-width: 992px)').matches && window.matchMedia('(hover: hover)').matches) {
+            document.querySelectorAll('.navbar .dropdown').forEach(function (dd) {
+                const toggle = dd.querySelector('[data-bs-toggle="dropdown"]');
+                if (!toggle) return;
+                const instance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+                dd.addEventListener('mouseenter', function () {
+                    instance.show();
+                });
+                dd.addEventListener('mouseleave', function () {
+                    instance.hide();
+                });
+            });
+
+            // Handle nested submenus show/hide on hover
+            document.querySelectorAll('.navbar .dropdown-submenu').forEach(function (sm) {
+                sm.addEventListener('mouseenter', function () {
+                    const menu = sm.querySelector(':scope > .dropdown-menu');
+                    if (menu) menu.classList.add('show');
+                });
+                sm.addEventListener('mouseleave', function () {
+                    const menu = sm.querySelector(':scope > .dropdown-menu');
+                    if (menu) menu.classList.remove('show');
+                });
+            });
+        }
+    });
+    </script>
+
+</html>
