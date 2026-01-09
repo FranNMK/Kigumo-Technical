@@ -3,6 +3,7 @@
   position: relative;
   padding: 20px 0;
   min-height: 80px;
+  z-index: 1000;
 }
 
 /* Allow navbar to wrap items */
