@@ -58,6 +58,47 @@
       .navbar-brand { padding-left: 0.5rem; }
       .navbar .nav-link { padding-left: 0.5rem; padding-right: 0.5rem; }
     }
+
+    /* Custom toggler: hamburger -> X animation */
+    .navbar-toggler {
+      border: none;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .toggler-icon {
+      display: inline-block;
+      width: 22px;
+      height: 18px;
+      position: relative;
+    }
+    .toggler-icon .bar {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: currentColor;
+      transition: transform .25s ease, opacity .2s ease;
+      border-radius: 2px;
+    }
+    .toggler-icon .bar:nth-child(1) { top: 0; }
+    .toggler-icon .bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+    .toggler-icon .bar:nth-child(3) { bottom: 0; }
+
+    /* When the button is NOT collapsed (menu open) transform bars into an X */
+    .navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(2) {
+      opacity: 0;
+    }
+    .navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
   </style>
 </head>
 
@@ -73,9 +114,10 @@
         </span>
       </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavCollapse"
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavCollapse"
         aria-controls="mainNavCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <span class="toggler-icon" aria-hidden="true"><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+        <span class="visually-hidden">Toggle navigation</span>
       </button>
 
       <div class="collapse navbar-collapse" id="mainNavCollapse">
