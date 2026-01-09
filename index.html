@@ -9,6 +9,9 @@
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
 
   <style>
+    /* Ensure navbar container can position brand absolutely for perfect centering */
+    .navbar { position: relative; }
+
     /* ---- Make nested submenus work on desktop (flyout) and mobile (inline) ---- */
     .dropdown-submenu { position: relative; }
 
@@ -41,16 +44,35 @@
       .navbar-collapse .dropdown-item { width: 100%; }
     }
 
-    /* Brand image sizing */
-    .navbar-brand img { max-height: 48px; width: auto; }
+    /* Center the brand/logo and increase its size */
+    .navbar-brand {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 6px; /* small vertical offset to align visually */
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .navbar-brand img {
+      max-height: 84px; /* larger logo */
+      width: auto;
+    }
+    /* Reduce logo size on very small screens to avoid crowding */
+    @media (max-width: 575.98px) {
+      .navbar-brand img { max-height: 60px; }
+    }
 
     /* Carousel image fit */
     .carousel-item img { object-fit: cover; width:100%; max-height: 70vh; }
 
-    /* Minor spacing */
-    @media (max-width: 575.98px) {
-      .navbar-brand { padding-left: 0.5rem; }
-      .navbar .nav-link { padding-left: 0.5rem; padding-right: 0.5rem; }
+    /* Minor spacing tweaks so collapsible content doesn't overlap centered brand */
+    .navbar .navbar-toggler {
+      z-index: 1031; /* make sure toggler sits above the centered brand on small screens */
+    }
+    .navbar .collapse {
+      margin-top: 8px;
     }
 
     /* Custom toggler: hamburger -> X animation */
@@ -101,7 +123,7 @@
   <!-- Combined navbar: logo only; yellow background -->
   <nav class="navbar navbar-expand-lg navbar-light bg-warning" aria-label="Main navigation">
     <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="#">
+      <a class="navbar-brand" href="#">
         <img src="FrontEnd/images/official_logo.jpg" alt="Kigumo logo" class="img-fluid" />
       </a>
 
