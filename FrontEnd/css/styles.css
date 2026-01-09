@@ -1,5 +1,9 @@
 /* Ensure navbar container can position brand absolutely for perfect centering */
-.navbar { position: relative; }
+.navbar { 
+  position: relative;
+  padding: 20px 0;
+  min-height: 120px;
+}
 
 /* ---- Make nested submenus work on desktop (flyout) and mobile (inline) ---- */
 .dropdown-submenu { position: relative; }
@@ -38,15 +42,18 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 6px; /* small vertical offset to align visually */
+  top: 0;
+  bottom: 0;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 .navbar-brand img {
-  max-height: 84px; /* larger logo */
+  max-height: 100%;
   width: auto;
+  object-fit: contain;
 }
 /* Reduce logo size on very small screens to avoid crowding */
 @media (max-width: 575.98px) {
@@ -55,18 +62,109 @@
 /* Desktop: position logo on the left */
 @media (min-width: 992px) {
   .navbar-brand {
-    position: relative;
-    left: 0;
+    position: absolute;
+    left: 15px;
     transform: none;
     padding-left: 0;
-  }
-  .navbar-nav {
-    margin-left: auto !important;
   }
 }
 
 /* Carousel image fit */
 .carousel-item img { object-fit: cover; width:100%; max-height: 70vh; }
+/* Carousel overlay and text */
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.carousel-caption {
+  padding: 40px;
+  color: white;
+  max-width: 600px;
+}
+
+.carousel-tag {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.carousel-title {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 20px 0;
+  line-height: 1.2;
+  color: #ceff00;
+}
+
+.carousel-subtitle {
+  font-size: 18px;
+  margin: 20px 0;
+  line-height: 1.6;
+  color: #fff;
+}
+
+.carousel-btn {
+  display: inline-block;
+  background: #ffc107;
+  color: #000;
+  padding: 12px 30px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: #ffb300;
+  color: #000;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .carousel-caption {
+    padding: 30px 20px;
+  }
+  
+  .carousel-title {
+    font-size: 32px;
+  }
+  
+  .carousel-subtitle {
+    font-size: 16px;
+  }
+  
+  .carousel-btn {
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-caption {
+    padding: 20px 15px;
+  }
+  
+  .carousel-title {
+    font-size: 24px;
+  }
+  
+  .carousel-subtitle {
+    font-size: 14px;
+  }
+  
+  .carousel-tag {
+    font-size: 14px;
+  }
+}
 
 /* Minor spacing tweaks so collapsible content doesn't overlap centered brand */
 .navbar .navbar-toggler {
