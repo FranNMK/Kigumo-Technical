@@ -180,15 +180,39 @@
 }
 
 @media (max-width: 768px) {
+  .carousel-caption {
+    padding: 20px 15px;
+    max-width: 100%;
+  }
+  
+  .carousel-overlay {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+  
   .carousel-tag {
     font-size: 20px;
     white-space: normal;
+  }
+  
+  .carousel-title {
+    font-size: 28px;
+  }
+  
+  .carousel-subtitle {
+    font-size: 16px;
   }
 }
 
 @media (max-width: 480px) {
   .carousel-caption {
-    padding: 20px 15px;
+    padding: 15px 10px;
+    max-width: 100%;
+  }
+  
+  .carousel-overlay {
+    align-items: flex-start;
+    padding-top: 15px;
   }
   
   .carousel-title {
