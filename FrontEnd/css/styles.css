@@ -179,6 +179,13 @@
   }
 }
 
+@media (max-width: 768px) {
+  .carousel-tag {
+    font-size: 20px;
+    white-space: normal;
+  }
+}
+
 @media (max-width: 480px) {
   .carousel-caption {
     padding: 20px 15px;
@@ -193,7 +200,13 @@
   }
   
   .carousel-tag {
-    font-size: 14px;
+    font-size: 16px;
+    white-space: normal;
+  }
+  
+  .tag-green,
+  .tag-highlight {
+    display: inline;
   }
 }
 
