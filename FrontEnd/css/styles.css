@@ -309,6 +309,8 @@ html { scroll-behavior: smooth; }
 .site-footer .footer-links i { vertical-align: middle; margin-right: 2px; }
 .site-footer .footer-contact a { color: rgba(255,255,255,0.85); }
 .site-footer .footer-contact a:hover { color: #fff; }
+/* About Us paragraph color override to yellow */
+.site-footer .footer-about { color: #ffc107; }
 
 /* Subscribe */
 .subscribe-form .form-control {
