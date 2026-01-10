@@ -1,5 +1,8 @@
 /* Basic enhancements for the site */
 html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
+body { overflow-x: hidden; }
+p { overflow-wrap: anywhere; }
 /* Make all media scale within containers on small screens */
 img, svg, video, canvas { max-width: 100%; height: auto; }
 
