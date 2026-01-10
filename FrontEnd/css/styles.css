@@ -7,3 +7,291 @@ html { scroll-behavior: smooth; }
 .contact-section .contact-list a:hover { text-decoration: underline; }
 .contact-section .card { border: 1px solid rgba(0,0,0,0.08); }
 .contact-section .form-status { min-height: 1.25rem; }
+/* Ensure navbar container uses flexbox for proper layout */
+.navbar { 
+  position: relative;
+  padding: 20px 0;
+  min-height: 80px;
+  z-index: 1000;
+}
+
+/* Allow navbar to wrap items */
+.navbar .container-fluid {
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* ---- Make nested submenus work on desktop (flyout) and mobile (inline) ---- */
+.dropdown-submenu { position: relative; }
+
+/* Desktop flyout to the right */
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -0.125rem;
+}
+
+@media (min-width: 992px) {
+  .navbar .dropdown:hover > .dropdown-menu { display: block; }
+  .navbar .dropdown-submenu:hover > .dropdown-menu { display: block; }
+}
+
+/* Mobile: make dropdown menus flow in document and submenus collapsible */
+@media (max-width: 991.98px) {
+  .navbar-collapse .dropdown-menu {
+    position: static !important;
+    float: none;
+    width: 100%;
+  }
+  .dropdown-submenu > .dropdown-menu {
+    display: none; /* hidden by default on mobile */
+    padding-left: 0.75rem;
+  }
+  .dropdown-submenu > .dropdown-menu.show {
+    display: block;
+  }
+  .navbar-collapse .dropdown-item { width: 100%; }
+}
+
+/* Logo positioned relatively with proper sizing */
+.navbar-brand {
+  position: relative;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  margin-right: auto;
+}
+.navbar-brand img {
+  max-height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+.college-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #28a745;
+  margin-left: 15px;
+  white-space: nowrap;
+}
+/* Reduce logo size on very small screens to avoid crowding */
+@media (max-width: 575.98px) {
+  .navbar-brand img { max-height: 60px; }
+  .college-name {
+    font-size: 14px;
+    margin-left: 8px;
+  }
+}
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .college-name {
+    font-size: 18px;
+  }
+}
+/* Desktop: adjust logo size */
+@media (min-width: 992px) {
+  .navbar-brand img {
+    max-height: 100px;
+  }
+  .college-name {
+    font-size: 28px;
+  }
+  /* Make nav items wrap if needed */
+  .navbar-collapse {
+    flex-basis: auto;
+  }
+  .navbar-nav {
+    flex-wrap: wrap;
+  }
+}
+
+/* Carousel image fit */
+.carousel-item img { object-fit: cover; width:100%; max-height: 70vh; }
+/* Carousel overlay and text */
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.carousel-caption {
+  padding: 40px;
+  color: white;
+  max-width: 100%;
+  width: auto;
+}
+
+.carousel-tag {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.tag-green {
+  color: #28a745;
+  border-bottom: 3px solid #28a745;
+  padding-bottom: 8px;
+}
+
+.tag-highlight {
+  color: #ffc107;
+  border-bottom: 3px solid #ffc107;
+  padding-bottom: 8px;
+}
+
+.carousel-title {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 20px 0;
+  line-height: 1.2;
+  color: #ceff00;
+}
+
+.carousel-subtitle {
+  font-size: 18px;
+  margin: 20px 0;
+  line-height: 1.6;
+  color: #fff;
+}
+
+.carousel-btn {
+  display: inline-block;
+  background: #ffc107;
+  color: #000;
+  padding: 12px 30px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: #ffb300;
+  color: #000;
+  text-decoration: none;
+}
+
+@media (min-width: 992px) {
+  .carousel-caption {
+    padding: 40px;
+    max-width: 600px;
+  }
+  
+  .carousel-tag {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-caption {
+    padding: 20px 15px;
+    max-width: 100%;
+  }
+  
+  .carousel-overlay {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+  
+  .carousel-tag {
+    font-size: 20px;
+    white-space: normal;
+  }
+  
+  .carousel-title {
+    font-size: 28px;
+  }
+  
+  .carousel-subtitle {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-caption {
+    padding: 15px 10px;
+    max-width: 100%;
+  }
+  
+  .carousel-overlay {
+    align-items: flex-start;
+    padding-top: 15px;
+  }
+  
+  .carousel-title {
+    font-size: 24px;
+  }
+  
+  .carousel-subtitle {
+    font-size: 14px;
+  }
+  
+  .carousel-tag {
+    font-size: 16px;
+    white-space: normal;
+  }
+  
+  .tag-green,
+  .tag-highlight {
+    display: inline;
+  }
+}
+
+/* Minor spacing tweaks so collapsible content doesn't overlap centered brand */
+.navbar .navbar-toggler {
+  z-index: 1031; /* make sure toggler sits above the centered brand on small screens */
+}
+.navbar .collapse {
+  margin-top: 8px;
+}
+
+/* Custom toggler: hamburger -> X animation */
+.navbar-toggler {
+  border: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #000; /* make sure bars are dark on yellow */
+}
+.toggler-icon {
+  display: inline-block;
+  width: 22px;
+  height: 18px;
+  position: relative;
+}
+.toggler-icon .bar {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  transition: transform .25s ease, opacity .2s ease;
+  border-radius: 2px;
+}
+.toggler-icon .bar:nth-child(1) { top: 0; }
+.toggler-icon .bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.toggler-icon .bar:nth-child(3) { bottom: 0; }
+
+/* When the button is NOT collapsed (menu open) transform bars into an X */
+.navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(2) {
+  opacity: 0;
+}
+.navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
