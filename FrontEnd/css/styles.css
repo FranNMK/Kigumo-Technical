@@ -298,7 +298,7 @@ html { scroll-behavior: smooth; }
 
 /* ---------------- Footer ---------------- */
 .site-footer {
-  background: linear-gradient(135deg, #0f3d13 0%, #0d2d0f 60%, #0b220d 100%);
+  background: #0b5d1e; /* solid green background */
   color: #e9f5ea;
 }
 .site-footer .footer-logo { height: 42px; width: auto; object-fit: contain; }
