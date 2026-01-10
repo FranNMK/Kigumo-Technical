@@ -200,7 +200,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 @media (min-width: 992px) {
   .carousel-caption {
     padding: 40px;
-    max-width: 600px;
+    max-width: 400px;
   }
   
   .carousel-tag {
