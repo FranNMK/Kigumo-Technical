@@ -1,3 +1,12 @@
+/* Basic enhancements for the site */
+html { scroll-behavior: smooth; }
+
+/* Contact Section */
+.contact-section .card-title { font-weight: 600; }
+.contact-section .contact-list a { text-decoration: none; }
+.contact-section .contact-list a:hover { text-decoration: underline; }
+.contact-section .card { border: 1px solid rgba(0,0,0,0.08); }
+.contact-section .form-status { min-height: 1.25rem; }
 /* Ensure navbar container uses flexbox for proper layout */
 .navbar { 
   position: relative;
