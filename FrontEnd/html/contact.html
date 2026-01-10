@@ -213,5 +213,91 @@
     </div>
   </section>
 
+  <!-- Site Footer -->
+  <footer class="site-footer text-light pt-5 pb-4 mt-5">
+    <div class="container">
+      <div class="row gy-4">
+        <!-- About + Subscribe -->
+        <div class="col-lg-4">
+          <div class="mb-3 d-flex align-items-center gap-2">
+            <img src="FrontEnd/images/official_logo.jpg" alt="Kigumo TVC" class="footer-logo">
+            <span class="fw-bold h5 m-0">KIGUMO TVC</span>
+          </div>
+          <h6 class="text-uppercase fw-bold mb-3">About Us</h6>
+          <p class="mb-4 small text-white-50">
+            The College is committed to training technically skilled personnel for employment across sectors of the
+            economy. We offer programs from Artisan to Diploma, equipped with modern facilities and dedicated staff.
+          </p>
+
+          <h6 class="text-uppercase fw-bold mb-2">Subscribe For Updates</h6>
+          <form class="subscribe-form" onsubmit="event.preventDefault();">
+            <div class="input-group">
+              <input type="email" class="form-control form-control-sm" placeholder="Your Email Address" aria-label="Email for updates">
+              <button class="btn btn-warning" type="submit" aria-label="Subscribe">&rarr;</button>
+            </div>
+          </form>
+
+          <div class="social-links mt-3 d-flex gap-3">
+            <a href="#" aria-label="Facebook" class="social-circle bg-fb"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="Twitter" class="social-circle bg-tw"><i class="bi bi-twitter"></i></a>
+            <a href="#" aria-label="YouTube" class="social-circle bg-yt"><i class="bi bi-youtube"></i></a>
+            <a href="#" aria-label="Telegram" class="social-circle bg-tg"><i class="bi bi-telegram"></i></a>
+            <a href="#" aria-label="WhatsApp" class="social-circle bg-wa"><i class="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-6 col-lg-2">
+          <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+          <ul class="list-unstyled footer-links">
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Home</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> About</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Our Programmes</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Latest News</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Job Vacancies</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> FAQs</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Get In Touch -->
+        <div class="col-6 col-lg-3">
+          <h6 class="text-uppercase fw-bold mb-3">Get In Touch</h6>
+          <ul class="list-unstyled footer-contact">
+            <li class="mb-2"><i class="bi bi-geo-alt-fill text-success me-2"></i> P.O. Box 5 - 10203 Kigumo, Kenya</li>
+            <li class="mb-2"><i class="bi bi-telephone-fill text-success me-2"></i> <a href="tel:+254769394273">+254 769 394 273</a></li>
+            <li class="mb-2"><i class="bi bi-envelope-fill text-success me-2"></i> <a href="mailto:info@kigumotvc.ac.ke">info@kigumotvc.ac.ke</a></li>
+            <li class="mb-2"><i class="bi bi-whatsapp text-success me-2"></i> <a href="tel:+254769394273">+254 769 394 273</a></li>
+          </ul>
+        </div>
+
+        <!-- Other Links -->
+        <div class="col-lg-3">
+          <h6 class="text-uppercase fw-bold mb-3">Other Links</h6>
+          <ul class="list-unstyled footer-links">
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Apply Help Loan</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> KUCCPS</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Updates</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> FAQ</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Student Portal</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Staff Portal</a></li>
+            <li><a href="#"><i class="bi bi-arrow-right-short"></i> Downloads</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="border-top border-success border-opacity-50 my-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-white-50">
+        <span>&copy; <span id="year"></span> Kigumo Technical And Vocational College. All rights reserved.</span>
+        <span>Designed with Bootstrap 5</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
 </body>
 </html>
