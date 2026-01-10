@@ -112,16 +112,17 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 
 /* Carousel image fit */
 .carousel-item { 
-  height: 70vh;
-  min-height: 400px;
+  height: 60vh;
+  min-height: 300px;
 }
 .carousel-item img { 
-  object-fit: cover; 
+  object-fit: contain; 
   width: 100%; 
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  background: #000;
 }
 /* Carousel overlay and text */
 .carousel-overlay {
@@ -208,7 +209,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 768px) {
-  .carousel-item { height: 55vh; min-height: 350px; }
+  .carousel-item { height: 50vh; min-height: 300px; }
   .carousel-caption {
     padding: 12px 12px;
     max-width: 100%;
@@ -227,14 +228,15 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 /* Extra small screens: ensure all text is visible */
 @media (max-width: 576px) {
   .carousel-item { 
-    height: 350px;
-    min-height: 350px;
+    height: 300px;
+    min-height: 300px;
   }
   .carousel-overlay { 
     position: absolute;
     align-items: center;
     justify-content: center;
     padding: 10px;
+    background: rgba(0,0,0,0.6);
   }
   .carousel-caption { 
     padding: 10px;
