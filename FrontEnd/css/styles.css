@@ -303,6 +303,7 @@ html { scroll-behavior: smooth; }
 }
 .site-footer .footer-logo { height: 42px; width: auto; object-fit: contain; }
 .site-footer a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
+.site-footer a { cursor: pointer; }
 .site-footer a:hover { color: #ffc107; }
 .site-footer .footer-links li { margin-bottom: .4rem; }
 .site-footer .footer-links i { vertical-align: middle; margin-right: 2px; }
