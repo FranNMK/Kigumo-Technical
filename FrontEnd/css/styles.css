@@ -1,60 +1,26 @@
-/* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-}
-
-/* Navbar */
-.navbar {
-  background-color: #222 !important;
-  padding: 0.5rem 1rem;
-}
-
-.navbar-brand {
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #ceff00 !important;
-}
-
-.navbar-nav .nav-link {
-  color: #fff !important;
-  margin: 0 0.5rem;
-  transition: color 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #ceff00 !important;
-}
-
-.navbar-toggler {
-  border-color: #ceff00;
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(206, 255, 0, 1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-}
+/* Basic enhancements for the site */
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
+body { overflow-x: hidden; }
+p { overflow-wrap: anywhere; }
+/* Make all media scale within containers on small screens */
+img, svg, video, canvas { max-width: 100%; height: auto; }
 
 /* Carousel image fit */
 .carousel-item {
   position: relative;
   overflow: hidden;
-  background: #000;
+  background:  #000;
   height: 70vh;
-  min-height: 400px;
+  min-height:  400px;
 }
 .carousel-item img {
   position: absolute;
   inset: 0;
-  width: 100%;
+  width:  100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  object-fit:  cover;
+  object-position:  center;
 }
 
 /* Carousel overlay and text */
@@ -95,7 +61,7 @@ body {
 .tag-highlight {
   color: #ffc107;
   border-bottom: 2px solid #ffc107;
-  padding-bottom: 0.25rem;
+  padding-bottom:  0.25rem;
 }
 
 .carousel-title {
@@ -107,7 +73,7 @@ body {
 }
 
 .carousel-subtitle {
-  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  font-size: clamp(0.875rem, 2. 5vw, 1.125rem);
   margin: clamp(0.75rem, 2vw, 1.25rem) 0;
   line-height: 1.5;
   color: #fff;
@@ -118,11 +84,11 @@ body {
   background: #ffc107;
   color: #000;
   padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.875rem);
-  text-decoration: none;
-  font-weight: 600;
+  text-decoration:  none;
+  font-weight:  600;
   font-size: clamp(0.875rem, 2vw, 1rem);
   border-radius: 4px;
-  margin-top: clamp(0.5rem, 2vw, 1.25rem);
+  margin-top: clamp(0.5rem, 2vw, 1. 25rem);
   transition: background 0.3s ease;
 }
 
@@ -133,12 +99,12 @@ body {
 }
 
 /* Tablet and up */
-@media (min-width: 768px) {
+@media (min-width:  768px) {
   .carousel-item {
     height: 65vh;
-    min-height: 450px;
+    min-height:  450px;
   }
-  .carousel-caption {
+  . carousel-caption {
     max-width: 90%;
   }
 }
@@ -147,7 +113,7 @@ body {
 @media (min-width: 992px) {
   .carousel-item {
     height: 70vh;
-    min-height: 500px;
+    min-height:  500px;
   }
   .carousel-caption {
     max-width: 700px;
@@ -157,181 +123,397 @@ body {
   }
 }
 
-/* Mobile: fix black space and improve layout */
-@media (max-width: 768px) {
-  .carousel-item {
-    height: 60vh;
-    min-height: 420px;
-  }
-  .carousel-overlay {
-    align-items: center;
-    padding: 1.5rem 1rem;
-  }
-  .carousel-caption {
-    text-align: center;
-    padding: 1rem;
-  }
-}
-
-/* Small mobile: ensure all content is visible */
+/* Small mobile adjustments */
 @media (max-width: 576px) {
   .carousel-item {
-    height: 55vh;
-    min-height: 400px;
+    height: 60vh;
+    min-height: 380px;
   }
-  .carousel-item img {
-    object-fit: cover;
-    object-position: center;
-  }
-  .carousel-overlay {
+  . carousel-overlay {
     align-items: center;
-    justify-content: center;
-    padding: 1rem;
   }
   .carousel-caption {
     text-align: center;
-    padding: 0.75rem;
-  }
-  .carousel-tag {
-    font-size: clamp(0.75rem, 3.5vw, 1.1rem);
-    margin-bottom: 0.5rem;
-  }
-  .carousel-title {
-    font-size: clamp(1.1rem, 5.5vw, 2rem);
-    margin: 0.75rem 0;
-  }
-  .carousel-subtitle {
-    font-size: clamp(0.8rem, 3vw, 1rem);
-    margin: 0.75rem 0;
-  }
-  .carousel-btn {
-    padding: 0.6rem 1.25rem;
-    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
-    margin-top: 0.75rem;
   }
 }
-
-/* About Section */
-.about-section {
-  padding: 3rem 0;
-  background-color: #f8f9fa;
-}
-
-.about-section h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.about-section p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #555;
-}
-
-/* Services Section */
-.services-section {
-  padding: 3rem 0;
-  background-color: #fff;
-}
-
-.services-section h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  text-align: center;
-  color: #333;
-}
-
-.service-card {
-  text-align: center;
-  padding: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.service-card i {
-  font-size: 3rem;
-  color: #ceff00;
-  margin-bottom: 1rem;
-}
-
-.service-card h4 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #333;
-}
-
-.service-card p {
-  font-size: 0.9rem;
-  color: #555;
-}
-
 /* Contact Section */
-.contact-section {
-  padding: 3rem 0;
-  background-color: #f8f9fa;
+.contact-section .card-title { font-weight: 600; }
+.contact-section .contact-list a { text-decoration: none; }
+.contact-section .contact-list a:hover { text-decoration: underline; }
+.contact-section .card { border: 1px solid rgba(0,0,0,0.08); }
+.contact-section .form-status { min-height: 1.25rem; }
+/* Ensure navbar container uses flexbox for proper layout */
+.navbar { 
+  position: relative;
+  padding: 20px 0;
+  min-height: 80px;
+  z-index: 1000;
 }
 
-.contact-section h2 {
-  font-size: 2rem;
+/* Allow navbar to wrap items */
+.navbar .container-fluid {
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* ---- Make nested submenus work on desktop (flyout) and mobile (inline) ---- */
+.dropdown-submenu { position: relative; }
+
+/* Desktop flyout to the right */
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -0.125rem;
+}
+
+@media (min-width: 992px) {
+  .navbar .dropdown:hover > .dropdown-menu { display: block; }
+  .navbar .dropdown-submenu:hover > .dropdown-menu { display: block; }
+}
+
+/* Mobile: make dropdown menus flow in document and submenus collapsible */
+@media (max-width: 991.98px) {
+  .navbar-collapse .dropdown-menu {
+    position: static !important;
+    float: none;
+    width: 100%;
+  }
+  .dropdown-submenu > .dropdown-menu {
+    display: none; /* hidden by default on mobile */
+    padding-left: 0.75rem;
+  }
+  .dropdown-submenu > .dropdown-menu.show {
+    display: block;
+  }
+  .navbar-collapse .dropdown-item { width: 100%; }
+}
+
+/* Logo positioned relatively with proper sizing */
+.navbar-brand {
+  position: relative;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  margin-right: auto;
+}
+.navbar-brand img {
+  max-height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+.college-name {
+  font-size: 24px;
   font-weight: bold;
-  margin-bottom: 2rem;
-  text-align: center;
-  color: #333;
+  color: #28a745;
+  margin-left: 15px;
+  white-space: nowrap;
+}
+/* Reduce logo size on very small screens to avoid crowding */
+@media (max-width: 575.98px) {
+  .navbar-brand img { max-height: 60px; }
+  .college-name {
+    font-size: 14px;
+    margin-left: 8px;
+  }
+}
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .college-name {
+    font-size: 18px;
+  }
+}
+/* Desktop: adjust logo size */
+@media (min-width: 992px) {
+  .navbar-brand img {
+    max-height: 100px;
+  }
+  .college-name {
+    font-size: 28px;
+  }
+  /* Make nav items wrap if needed */
+  .navbar-collapse {
+    flex-basis: auto;
+  }
+  .navbar-nav {
+    flex-wrap: wrap;
+  }
 }
 
-.contact-section form {
-  max-width: 600px;
-  margin: 0 auto;
+/* Carousel image fit */
+.carousel-item {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  height: 60vh;
+  min-height: 320px;
+}
+.carousel-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+/* Carousel overlay and text */
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.contact-section .form-control {
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  padding: 0.75rem;
+.carousel-caption {
+  padding: 40px;
+  color: white;
+  max-width: 100%;
+  width: auto;
 }
 
-.contact-section .btn-primary {
-  background-color: #ceff00;
-  border: none;
-  color: #000;
+.carousel-tag {
+  font-size: clamp(14px, 4vw, 32px);
+  font-weight: 700;
+  margin-bottom: 10px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.tag-green {
+  color: #28a745;
+  border-bottom: 3px solid #28a745;
+  padding-bottom: 8px;
+}
+
+.tag-highlight {
+  color: #ffc107;
+  border-bottom: 3px solid #ffc107;
+  padding-bottom: 8px;
+}
+
+.carousel-title {
+  font-size: clamp(20px, 7vw, 40px);
   font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.contact-section .btn-primary:hover {
-  background-color: #b8e600;
-}
-
-/* Footer */
-footer {
-  background-color: #222;
-  color: #fff;
-  padding: 1.5rem 0;
-  text-align: center;
-}
-
-footer p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-footer a {
+  margin: 20px 0;
+  line-height: 1.2;
   color: #ceff00;
+}
+
+.carousel-subtitle {
+  font-size: clamp(13px, 4vw, 18px);
+  margin: 20px 0;
+  line-height: 1.6;
+  color: #fff;
+}
+
+.carousel-btn {
+  display: inline-block;
+  background: #ffc107;
+  color: #000;
+  padding: 12px 30px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: #ffb300;
+  color: #000;
   text-decoration: none;
 }
 
-footer a:hover {
-  text-decoration: underline;
+@media (min-width: 992px) {
+  .carousel-caption {
+    padding: 40px;
+    max-width: 600px;
+  }
+  
+  .carousel-tag {
+    white-space: nowrap;
+  }
 }
+
+@media (max-width: 768px) {
+  .carousel-item { height: 50vh; min-height: 320px; }
+  .carousel-item img { object-fit: contain; }
+  .carousel-caption {
+    padding: 12px 12px;
+    max-width: 100%;
+  }
+  
+  .carousel-overlay {
+    align-items: flex-start;
+    padding-top: 12px;
+  }
+  
+  /* Let content determine height on small screens to avoid text clipping */
+  .carousel-title { margin: 12px 0; line-height: 1.3; }
+  .carousel-subtitle { margin: 12px 0; line-height: 1.4; }
+}
+
+/* Extra small screens: ensure all text is visible */
+@media (max-width: 576px) {
+  .carousel-item {
+    height: 360px;
+    min-height: 360px;
+  }
+  .carousel-item img { object-fit: contain; }
+  .carousel-overlay { 
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  .carousel-caption { 
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+  }
+  .carousel-tag { 
+    font-size: 11px !important;
+    margin-bottom: 5px;
+    display: block;
+    line-height: 1.2;
+  }
+  .tag-green, .tag-highlight {
+    border-bottom-width: 1px;
+    padding-bottom: 2px;
+  }
+  .carousel-title { 
+    font-size: 16px !important;
+    margin: 6px 0;
+    line-height: 1.2;
+  }
+  .carousel-subtitle {
+    font-size: 11px !important;
+    margin: 6px 0;
+    line-height: 1.3;
+  }
+  .carousel-btn { 
+    padding: 6px 12px; 
+    font-size: 0.85rem; 
+    margin-top: 6px;
+    display: inline-block;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-caption {
+    padding: 10px 10px;
+    max-width: 100%;
+  }
+  
+  .carousel-overlay {
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+  
+  .carousel-tag {
+    white-space: normal;
+  }
+  .carousel-title { margin: 10px 0; }
+  .carousel-subtitle { margin: 10px 0; }
+  
+  .tag-green,
+  .tag-highlight {
+    display: inline;
+  }
+}
+
+/* Minor spacing tweaks so collapsible content doesn't overlap centered brand */
+.navbar .navbar-toggler {
+  z-index: 1031; /* make sure toggler sits above the centered brand on small screens */
+}
+.navbar .collapse {
+  margin-top: 8px;
+}
+
+/* Custom toggler: hamburger -> X animation */
+.navbar-toggler {
+  border: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #000; /* make sure bars are dark on yellow */
+}
+.toggler-icon {
+  display: inline-block;
+  width: 22px;
+  height: 18px;
+  position: relative;
+}
+.toggler-icon .bar {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  transition: transform .25s ease, opacity .2s ease;
+  border-radius: 2px;
+}
+.toggler-icon .bar:nth-child(1) { top: 0; }
+.toggler-icon .bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.toggler-icon .bar:nth-child(3) { bottom: 0; }
+
+/* When the button is NOT collapsed (menu open) transform bars into an X */
+.navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(2) {
+  opacity: 0;
+}
+.navbar-toggler:not(.collapsed) .toggler-icon .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ---------------- Footer ---------------- */
+.site-footer {
+  background: #0b5d1e; /* solid green background */
+  color: #e9f5ea;
+}
+.site-footer .footer-logo { height: 42px; width: auto; object-fit: contain; }
+.site-footer a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
+.site-footer a { cursor: pointer; }
+.site-footer a:hover { color: #ffc107; }
+.site-footer .footer-links li { margin-bottom: .4rem; }
+.site-footer .footer-links i { vertical-align: middle; margin-right: 2px; }
+.site-footer .footer-contact a { color: rgba(255,255,255,0.85); }
+.site-footer .footer-contact a:hover { color: #fff; }
+/* About Us paragraph color override to yellow */
+.site-footer .footer-about { color: #ffc107; }
+
+/* Subscribe */
+.subscribe-form .form-control {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+}
+.subscribe-form .form-control::placeholder { color: rgba(255,255,255,0.7); }
+.subscribe-form .form-control:focus { box-shadow: none; border-color: #ffc107; }
+
+/* Social icons circles */
+.social-circle {
+  width: clamp(32px, 8vw, 40px); height: clamp(32px, 8vw, 40px); border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+/* Contact section tighter padding on small screens */
+@media (max-width: 576px) {
+  .contact-section .card-body { padding: 1rem; }
+}
+.bg-fb { background-color: #3b5998; }
+.bg-tw { background-color: #1da1f2; }
+.bg-yt { background-color: #ff0000; }
+.bg-tg { background-color: #0088cc; }
+.bg-wa { background-color: #25d366; }
