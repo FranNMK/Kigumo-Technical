@@ -145,8 +145,8 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 /* Ensure navbar container uses flexbox for proper layout */
 .navbar { 
   position: relative;
-  padding: 20px 0;
-  min-height: 80px;
+  padding: 10px 0;
+  min-height: 50px;
   z-index: 1000;
 }
 
@@ -199,7 +199,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
   margin-right: auto;
 }
 .navbar-brand img {
-  max-height: 80px;
+  max-height: 50px;
   width: auto;
   object-fit: contain;
 }
@@ -212,7 +212,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 }
 /* Reduce logo size on very small screens to avoid crowding */
 @media (max-width: 575.98px) {
-  .navbar-brand img { max-height: 60px; }
+  .navbar-brand img { max-height: 40px; }
   .college-name {
     font-size: 14px;
     margin-left: 8px;
@@ -226,7 +226,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 /* Desktop: adjust logo size */
 @media (min-width: 992px) {
   .navbar-brand img {
-    max-height: 100px;
+    max-height: 60px;
   }
   .college-name {
     font-size: 28px;
