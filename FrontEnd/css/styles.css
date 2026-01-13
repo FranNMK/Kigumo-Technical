@@ -6,6 +6,136 @@ p { overflow-wrap: anywhere; }
 /* Make all media scale within containers on small screens */
 img, svg, video, canvas { max-width: 100%; height: auto; }
 
+/* Carousel image fit */
+.carousel-item {
+  position: relative;
+  overflow: hidden;
+  background:  #000;
+  height: 70vh;
+  min-height:  400px;
+}
+.carousel-item img {
+  position: absolute;
+  inset: 0;
+  width:  100%;
+  height: 100%;
+  object-fit:  cover;
+  object-position:  center;
+}
+
+/* Carousel overlay and text */
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+.carousel-caption {
+  padding: clamp(1rem, 3vw, 2.5rem);
+  color: white;
+  max-width: 100%;
+  width: 100%;
+}
+
+.carousel-tag {
+  font-size: clamp(0.875rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.tag-green {
+  color: #28a745;
+  border-bottom: 2px solid #28a745;
+  padding-bottom: 0.25rem;
+}
+
+.tag-highlight {
+  color: #ffc107;
+  border-bottom: 2px solid #ffc107;
+  padding-bottom:  0.25rem;
+}
+
+.carousel-title {
+  font-size: clamp(1.25rem, 5vw, 2.5rem);
+  font-weight: bold;
+  margin: clamp(0.75rem, 2vw, 1.25rem) 0;
+  line-height: 1.2;
+  color: #ceff00;
+}
+
+.carousel-subtitle {
+  font-size: clamp(0.875rem, 2. 5vw, 1.125rem);
+  margin: clamp(0.75rem, 2vw, 1.25rem) 0;
+  line-height: 1.5;
+  color: #fff;
+}
+
+.carousel-btn {
+  display: inline-block;
+  background: #ffc107;
+  color: #000;
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.875rem);
+  text-decoration:  none;
+  font-weight:  600;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  border-radius: 4px;
+  margin-top: clamp(0.5rem, 2vw, 1. 25rem);
+  transition: background 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: #ffb300;
+  color: #000;
+  text-decoration: none;
+}
+
+/* Tablet and up */
+@media (min-width:  768px) {
+  .carousel-item {
+    height: 65vh;
+    min-height:  450px;
+  }
+  . carousel-caption {
+    max-width: 90%;
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 992px) {
+  .carousel-item {
+    height: 70vh;
+    min-height:  500px;
+  }
+  .carousel-caption {
+    max-width: 700px;
+  }
+  .carousel-tag {
+    white-space: nowrap;
+  }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 576px) {
+  .carousel-item {
+    height: 60vh;
+    min-height: 380px;
+  }
+  . carousel-overlay {
+    align-items: center;
+  }
+  .carousel-caption {
+    text-align: center;
+  }
+}
 /* Contact Section */
 .contact-section .card-title { font-weight: 600; }
 .contact-section .contact-list a { text-decoration: none; }
