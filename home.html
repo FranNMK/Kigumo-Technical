@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gatimu School Exam Management</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+    
+    .mono {
+      font-family: 'Space Mono', monospace;
+    }
+
+    .tab-button {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: currentColor;
+    }
+
+    .grade-tab {
+      transition: all 0.2s ease;
+    }
+
+    .grade-tab.active {
+      transform: translateY(-2px);
+    }
+
+    .autocomplete-item {
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .autocomplete-item:hover {
+      background-color: #FEF3C7;
+    }
+
+    .upload-zone {
+      border: 2px dashed #D97706;
+      transition: all 0.3s ease;
+    }
+
+    .upload-zone:hover {
+      border-color: #B45309;
+      background-color: #FEF3C7;
+    }
+
+    .upload-zone.dragover {
+      border-color: #92400E;
+      background-color: #FDE68A;
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      
+      body {
+        background: white !important;
+      }
+      
+      #app {
+        background: white !important;
+      }
+      
+      .print-section {
+        page-break-after: always;
+      }
+      
+      table {
+        page-break-inside: auto;
+      }
+      
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      
+      thead {
+        display: table-header-group;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app" class="min-h-full w-full bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-100 overflow-auto">
+   <div class="app-container max-w-7xl mx-auto p-6"><!-- Header -->
+    <div class="bg-gradient-to-r from-amber-900 to-orange-800 rounded-2xl shadow-2xl p-8 mb-6 text-white">
+     <h1 id="school-title" class="text-4xl font-bold text-center mb-2">Gatimu School Exam Management</h1>
+     <p id="exam-subtitle" class="text-center text-amber-100 text-lg mono">CBC Assessment System</p>
+    </div><!-- Main Tab Navigation -->
+    <div class="bg-white rounded-2xl shadow-xl mb-6 no-print overflow-hidden">
+     <div class="flex border-b-2 border-gray-200"><button id="tab-register" class="tab-button active flex-1 px-6 py-4 font-semibold text-amber-700 hover:bg-amber-50"> 📝 Register Students </button> <button id="tab-marks" class="tab-button flex-1 px-6 py-4 font-semibold text-gray-600 hover:bg-amber-50"> 📊 Enter Marks </button> <button id="tab-results" class="tab-button flex-1 px-6 py-4 font-semibold text-gray-600 hover:bg-amber-50"> 🏆 View Results </button>
+     </div>
+    </div><!-- Student Registration Section -->
+    <div id="section-register" class="no-print"><!-- Mass Upload Section -->
+     <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-amber-900 mb-4">📤 Mass Upload Students (Excel)</h2>
+      <div id="upload-zone" class="upload-zone rounded-xl p-8 text-center cursor-pointer">
+       <svg class="mx-auto h-12 w-12 text-amber-600 mb-4" stroke="currentColor" fill="none" viewbox="0 0 48 48"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+       </svg>
+       <p class="text-lg font-semibold text-gray-700 mb-2">Drop Excel file here or click to browse</p>
+       <p class="text-sm text-gray-500 mb-4">Upload .xlsx or .xls file with columns: Admno, FirstName, SecondName, Surname, Grade</p><input type="file" id="excel-file" accept=".xlsx,.xls" class="hidden"> <button type="button" id="browse-btn" class="bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 transition-colors"> Browse Files </button>
+      </div>
+      <div id="upload-status" class="mt-4 text-center font-semibold"></div>
+     </div><!-- Manual Registration -->
+     <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-amber-900 mb-4">✏️ Register Individual Student</h2>
+      <form id="register-form" class="space-y-4">
+       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div><label for="reg-admno" class="block text-sm font-medium text-gray-700 mb-1">Admission Number</label> <input type="text" id="reg-admno" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="reg-first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label> <input type="text" id="reg-first-name" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="reg-second-name" class="block text-sm font-medium text-gray-700 mb-1">Second Name</label> <input type="text" id="reg-second-name" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="reg-surname" class="block text-sm font-medium text-gray-700 mb-1">Surname (Last Name)</label> <input type="text" id="reg-surname" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+       </div>
+       <div><label for="reg-grade" class="block text-sm font-medium text-gray-700 mb-1">Grade</label> <select id="reg-grade" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"> <option value="">Select Grade</option> <option value="Grade 1">Grade 1</option> <option value="Grade 2">Grade 2</option> <option value="Grade 3">Grade 3</option> <option value="Grade 4">Grade 4</option> <option value="Grade 5">Grade 5</option> <option value="Grade 6">Grade 6</option> <option value="Grade 7">Grade 7</option> <option value="Grade 8">Grade 8</option> <option value="Grade 9">Grade 9</option> </select>
+       </div>
+       <div class="flex gap-3"><button type="submit" id="register-submit-btn" class="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors shadow-lg"> Register Student </button> <button type="button" id="register-clear-btn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"> Clear </button>
+       </div>
+       <div id="register-status" class="text-center text-sm font-medium"></div>
+      </form>
+     </div><!-- Registered Students by Grade -->
+     <div class="bg-white rounded-2xl shadow-xl p-6">
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+       <h2 class="text-2xl font-bold text-amber-900">📚 Registered Students</h2>
+       <div class="flex gap-3"><button id="print-students-btn" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg flex items-center gap-2"> 🖨️ Print/PDF </button> <button id="export-students-btn" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-lg flex items-center gap-2"> 📥 Export Excel </button>
+       </div>
+      </div><!-- Grade Tabs -->
+      <div class="flex flex-wrap gap-2 mb-4 border-b-2 pb-2"><button class="grade-tab active px-4 py-2 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700" data-grade="all">All Grades</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 1">Grade 1</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 2">Grade 2</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 3">Grade 3</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 4">Grade 4</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 5">Grade 5</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 6">Grade 6</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 7">Grade 7</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 8">Grade 8</button> <button class="grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 9">Grade 9</button>
+      </div>
+      <div id="registered-students-list" class="space-y-2 max-h-96 overflow-y-auto">
+       <p class="text-gray-500 text-center py-8">No students registered yet.</p>
+      </div>
+     </div>
+    </div><!-- Student Marks Entry Section -->
+    <div id="section-marks" class="bg-white rounded-2xl shadow-xl p-6 mb-6 no-print hidden">
+     <h2 class="text-2xl font-bold text-amber-900 mb-4">📊 Enter Student Marks</h2>
+     <form id="marks-form" class="space-y-4"><!-- Student Details with Autocomplete -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-amber-50 p-4 rounded-lg">
+       <div class="relative"><label for="marks-admno" class="block text-sm font-medium text-gray-700 mb-1">Admission Number</label> <input type="text" id="marks-admno" required autocomplete="off" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        <div id="admno-suggestions" class="absolute z-10 w-full bg-white border-2 border-amber-300 rounded-lg shadow-xl mt-1 hidden max-h-48 overflow-y-auto"></div>
+       </div>
+       <div><label for="marks-student-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label> <input type="text" id="marks-student-name" readonly class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg bg-gray-100 mono">
+       </div>
+       <div><label for="marks-grade" class="block text-sm font-medium text-gray-700 mb-1">Grade</label> <input type="text" id="marks-grade" readonly class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg bg-gray-100 mono">
+       </div>
+      </div><!-- CBC Subject Marks -->
+      <div class="border-t-2 pt-4 mt-4">
+       <h3 class="text-lg font-semibold text-gray-800 mb-3">CBC Subject Marks (Out of 100)</h3>
+       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div><label for="english" class="block text-sm font-medium text-gray-700 mb-1">English</label> <input type="number" id="english" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="kiswahili" class="block text-sm font-medium text-gray-700 mb-1">Kiswahili</label> <input type="number" id="kiswahili" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="mathematics" class="block text-sm font-medium text-gray-700 mb-1">Mathematics</label> <input type="number" id="mathematics" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="integrated-science" class="block text-sm font-medium text-gray-700 mb-1">Integrated Science</label> <input type="number" id="integrated-science" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="agriculture" class="block text-sm font-medium text-gray-700 mb-1">Agriculture</label> <input type="number" id="agriculture" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="social-studies" class="block text-sm font-medium text-gray-700 mb-1">Social Studies</label> <input type="number" id="social-studies" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="cre" class="block text-sm font-medium text-gray-700 mb-1">Christian Religious Education</label> <input type="number" id="cre" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="creative-arts" class="block text-sm font-medium text-gray-700 mb-1">Creative Arts &amp; Sports</label> <input type="number" id="creative-arts" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        <div><label for="pre-technical" class="block text-sm font-medium text-gray-700 mb-1">Pre-technical Studies</label> <input type="number" id="pre-technical" min="0" max="100" required class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+       </div>
+      </div><!-- Auto-calculated Results -->
+      <div class="bg-gradient-to-r from-amber-100 to-orange-100 rounded-xl p-6 border-2 border-amber-300">
+       <h3 class="text-lg font-semibold text-amber-900 mb-3">📈 Auto-Calculated Results</h3>
+       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div class="bg-white rounded-lg p-3 shadow">
+         <p class="text-sm text-gray-600 mb-1">Total Marks</p>
+         <p id="calc-total" class="text-2xl font-bold text-amber-900 mono">0</p>
+        </div>
+        <div class="bg-white rounded-lg p-3 shadow">
+         <p class="text-sm text-gray-600 mb-1">Average</p>
+         <p id="calc-average" class="text-2xl font-bold text-amber-900 mono">0.0</p>
+        </div>
+        <div class="bg-white rounded-lg p-3 shadow">
+         <p class="text-sm text-gray-600 mb-1">Total Points</p>
+         <p id="calc-points" class="text-2xl font-bold text-amber-900 mono">0</p>
+        </div>
+        <div class="bg-white rounded-lg p-3 shadow">
+         <p class="text-sm text-gray-600 mb-1">Grade</p>
+         <p id="calc-grade" class="text-2xl font-bold text-amber-900 mono">-</p>
+        </div>
+       </div>
+      </div><!-- Submit Button -->
+      <div class="flex gap-3"><button type="submit" id="marks-submit-btn" class="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors shadow-lg"> <span id="submit-text">Save Student Marks</span> </button> <button type="button" id="marks-clear-btn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"> Clear Form </button>
+      </div>
+      <div id="marks-status" class="text-center text-sm font-medium"></div>
+     </form>
+    </div><!-- Results Summary Section -->
+    <div id="section-results" class="no-print hidden">
+     <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+       <h2 class="text-2xl font-bold text-amber-900">🏆 Class Results Summary</h2>
+       <div class="flex gap-3"><button id="print-pdf-btn" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg flex items-center gap-2"> 🖨️ Print/PDF </button> <button id="export-excel-btn" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-lg flex items-center gap-2"> <span id="print-text">📥 Export Excel</span> </button>
+       </div>
+      </div><!-- Grade Filter Tabs -->
+      <div class="flex flex-wrap gap-2 mb-4 border-b-2 pb-2"><button class="results-grade-tab active px-4 py-2 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700" data-grade="all">All Grades</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 1">Grade 1</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 2">Grade 2</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 3">Grade 3</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 4">Grade 4</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 5">Grade 5</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 6">Grade 6</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 7">Grade 7</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 8">Grade 8</button> <button class="results-grade-tab px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-amber-100" data-grade="Grade 9">Grade 9</button>
+      </div>
+      <div id="results-container" class="overflow-x-auto">
+       <p class="text-gray-500 text-center py-8">No marks entered yet. Enter marks to see results.</p>
+      </div>
+     </div>
+    </div><!-- Print Header (Hidden, only shows when printing) -->
+    <div id="print-header" style="display: none;">
+     <div class="text-center mb-6 pb-4 border-b-4 border-amber-900">
+      <h1 class="text-3xl font-bold mb-2" id="print-school-name">Gatimu School</h1>
+      <h2 class="text-xl mb-2" id="print-exam-title">CBC Assessment Results</h2>
+      <p class="text-sm text-gray-600" id="print-grade-info"></p>
+      <p class="text-sm text-gray-600" id="print-date"></p>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      school_name: "Gatimu School",
+      exam_title: "CBC Assessment",
+      submit_button_text: "Save Student Marks",
+      print_button_text: "📥 Export Excel",
+      primary_color: "#D97706",
+      secondary_color: "#FFFFFF",
+      text_color: "#78350F",
+      accent_color: "#10B981",
+      surface_color: "#FEF3C7",
+      font_family: "Outfit",
+      font_size: 16
+    };
+
+    let allRecords = [];
+    let registeredStudents = [];
+    let examRecords = [];
+    let isSubmitting = false;
+    let currentTab = 'register';
+    let selectedGrade = 'all';
+    let selectedResultsGrade = 'all';
+
+    // CBC Grading System
+    function calculateCBCGrade(percentage) {
+      if (percentage >= 90) return { code: 'EE1', points: 8, desc: 'Exceeding Expectations' };
+      if (percentage >= 75) return { code: 'EE2', points: 7, desc: 'Exceeding Expectations' };
+      if (percentage >= 58) return { code: 'ME1', points: 6, desc: 'Meeting Expectations' };
+      if (percentage >= 41) return { code: 'ME2', points: 5, desc: 'Meeting Expectations' };
+      if (percentage >= 31) return { code: 'AE1', points: 4, desc: 'Approaching Expectations' };
+      if (percentage >= 21) return { code: 'AE2', points: 3, desc: 'Approaching Expectations' };
+      if (percentage >= 11) return { code: 'BE1', points: 2, desc: 'Below Expectations' };
+      return { code: 'BE2', points: 1, desc: 'Below Expectations' };
+    }
+
+    function getGradeColor(code) {
+      if (code.startsWith('EE')) return 'bg-green-100 text-green-800 border-green-300';
+      if (code.startsWith('ME')) return 'bg-blue-100 text-blue-800 border-blue-300';
+      if (code.startsWith('AE')) return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      if (code.startsWith('BE')) return 'bg-red-100 text-red-800 border-red-300';
+      return 'bg-gray-100 text-gray-800 border-gray-300';
+    }
+
+    // Tab switching
+    function switchTab(tabName) {
+      currentTab = tabName;
+      
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active', 'text-amber-700');
+        btn.classList.add('text-gray-600');
+      });
+      
+      const activeTab = document.getElementById(`tab-${tabName}`);
+      activeTab.classList.add('active', 'text-amber-700');
+      activeTab.classList.remove('text-gray-600');
+      
+      document.getElementById('section-register').classList.toggle('hidden', tabName !== 'register');
+      document.getElementById('section-marks').classList.toggle('hidden', tabName !== 'marks');
+      document.getElementById('section-results').classList.toggle('hidden', tabName !== 'results');
+    }
+
+    document.getElementById('tab-register').addEventListener('click', () => switchTab('register'));
+    document.getElementById('tab-marks').addEventListener('click', () => switchTab('marks'));
+    document.getElementById('tab-results').addEventListener('click', () => switchTab('results'));
+
+    // Excel Upload Functionality
+    const uploadZone = document.getElementById('upload-zone');
+    const fileInput = document.getElementById('excel-file');
+    const browseBtn = document.getElementById('browse-btn');
+
+    browseBtn.addEventListener('click', () => fileInput.click());
+    uploadZone.addEventListener('click', () => fileInput.click());
+
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) processExcelFile(file);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) processExcelFile(file);
+    });
+
+    async function processExcelFile(file) {
+      const reader = new FileReader();
+      
+      reader.onload = async (e) => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+
+          if (jsonData.length === 0) {
+            showStatus('upload-status', 'Excel file is empty!', 'error');
+            return;
+          }
+
+          const firstRow = jsonData[0];
+          const foundColumns = Object.keys(firstRow);
+          console.log('Found columns in Excel:', foundColumns);
+
+          let successCount = 0;
+          let errorCount = 0;
+          let duplicateAdmnos = [];
+          let missingDataDetails = [];
+
+          showStatus('upload-status', `Processing ${jsonData.length} students...`, 'info');
+
+          for (let i = 0; i < jsonData.length; i++) {
+            const row = jsonData[i];
+            
+            if (allRecords.length + successCount >= 999) {
+              showStatus('upload-status', `❌ Limit reached! Successfully uploaded ${successCount} students before hitting limit.`, 'error');
+              break;
+            }
+
+            const admno = String(row.Admno || row.admno || row.ADMNO || row.AdmNo || row['Admission Number'] || row['ADM NO'] || row['Adm No'] || '').trim();
+            const firstName = String(row.FirstName || row.firstname || row.first_name || row.FIRSTNAME || row['First Name'] || row.Name || '').trim();
+            const secondName = String(row.SecondName || row.secondname || row.second_name || row.SECONDNAME || row['Second Name'] || row['Middle Name'] || '').trim();
+            const surname = String(row.Surname || row.surname || row.SURNAME || row.LastName || row.lastname || row['Last Name'] || '').trim();
+            const grade = String(row.Grade || row.grade || row.GRADE || row.Class || row.class || row.CLASS || '').trim();
+
+            let missingFields = [];
+            if (!admno) missingFields.push('Admission Number');
+            if (!firstName) missingFields.push('First Name');
+            if (!surname) missingFields.push('Surname');
+            if (!grade) missingFields.push('Grade');
+
+            if (missingFields.length > 0) {
+              errorCount++;
+              missingDataDetails.push({
+                row: i + 2,
+                fields: missingFields,
+                data: row
+              });
+              continue;
+            }
+
+            const existingStudent = registeredStudents.find(s => s.admno === admno);
+            if (existingStudent) {
+              errorCount++;
+              duplicateAdmnos.push(admno);
+              continue;
+            }
+
+            const studentData = {
+              record_type: 'student',
+              admno: admno,
+              first_name: firstName,
+              second_name: secondName,
+              surname: surname,
+              grade: grade,
+              timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(studentData);
+            if (result.isOk) {
+              successCount++;
+              await new Promise(resolve => setTimeout(resolve, 50));
+            } else {
+              errorCount++;
+            }
+          }
+
+          let message = '';
+          
+          if (successCount > 0) {
+            message = `✅ Upload complete! ${successCount} student${successCount !== 1 ? 's' : ''} added successfully.`;
+          }
+          
+          if (errorCount > 0) {
+            if (successCount > 0) message += '<br><br>';
+            message += `⚠️ ${errorCount} row${errorCount !== 1 ? 's' : ''} skipped:<br>`;
+            
+            if (duplicateAdmnos.length > 0) {
+              message += `<br>• Duplicate admission numbers: ${duplicateAdmnos.slice(0, 5).join(', ')}${duplicateAdmnos.length > 5 ? '...' : ''}`;
+            }
+            
+            if (missingDataDetails.length > 0) {
+              message += `<br>• Missing data in ${missingDataDetails.length} row(s):<br>`;
+              missingDataDetails.slice(0, 5).forEach(detail => {
+                message += `  Row ${detail.row}: Missing ${detail.fields.join(', ')}<br>`;
+              });
+              if (missingDataDetails.length > 5) {
+                message += `  ... and ${missingDataDetails.length - 5} more rows<br>`;
+              }
+              message += `<br>💡 <strong>Expected columns:</strong> Admno, FirstName, Surname, Grade (SecondName is optional)<br>`;
+              message += `📋 <strong>Your columns:</strong> ${foundColumns.join(', ')}`;
+            }
+          }
+          
+          if (missingDataDetails.length > 0 || duplicateAdmnos.length > 0) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+              <div class="bg-white rounded-xl p-6 max-w-2xl max-h-[80vh] overflow-y-auto">
+                <h3 class="text-xl font-bold text-amber-900 mb-4">Upload Report</h3>
+                <div class="space-y-3 text-sm">
+                  ${message}
+                </div>
+                <button class="mt-6 bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 w-full">
+                  Close
+                </button>
+              </div>
+            `;
+            document.body.appendChild(modal);
+            modal.querySelector('button').addEventListener('click', () => modal.remove());
+          }
+          
+          const statusMessage = successCount > 0 
+            ? `✅ ${successCount} students uploaded successfully!` 
+            : '❌ No students could be uploaded. Check the error details above.';
+          
+          showStatus('upload-status', statusMessage, successCount > 0 ? 'success' : 'error');
+          
+          fileInput.value = '';
+        } catch (error) {
+          console.error('Excel processing error:', error);
+          showStatus('upload-status', 'Error processing Excel file. Please check the file format and try again.', 'error');
+          fileInput.value = '';
+        }
+      };
+
+      reader.onerror = () => {
+        showStatus('upload-status', 'Error reading file. Please try again.', 'error');
+        fileInput.value = '';
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+
+    // Auto-calculate results
+    function updateCalculations() {
+      const subjects = ['english', 'kiswahili', 'mathematics', 'integrated-science', 'agriculture', 'social-studies', 'cre', 'creative-arts', 'pre-technical'];
+      let total = 0;
+      let totalPoints = 0;
+      let count = 0;
+
+      subjects.forEach(subject => {
+        const value = parseFloat(document.getElementById(subject).value) || 0;
+        if (value > 0) {
+          total += value;
+          const gradeInfo = calculateCBCGrade(value);
+          totalPoints += gradeInfo.points;
+          count++;
+        }
+      });
+
+      const average = count > 0 ? (total / count).toFixed(1) : 0;
+      const overallGrade = count === subjects.length ? calculateCBCGrade(parseFloat(average)) : { code: '-', points: 0 };
+
+      document.getElementById('calc-total').textContent = total;
+      document.getElementById('calc-average').textContent = average;
+      document.getElementById('calc-points').textContent = totalPoints;
+      document.getElementById('calc-grade').textContent = overallGrade.code;
+    }
+
+    // Grade tab switching for registered students
+    document.querySelectorAll('.grade-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        selectedGrade = tab.dataset.grade;
+        
+        document.querySelectorAll('.grade-tab').forEach(t => {
+          t.classList.remove('active', 'bg-amber-600', 'text-white');
+          t.classList.add('bg-gray-200', 'text-gray-700');
+        });
+        
+        tab.classList.add('active', 'bg-amber-600', 'text-white');
+        tab.classList.remove('bg-gray-200', 'text-gray-700');
+        
+        renderRegisteredStudents();
+      });
+    });
+
+    // Results grade tab switching
+    document.querySelectorAll('.results-grade-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        selectedResultsGrade = tab.dataset.grade;
+        
+        document.querySelectorAll('.results-grade-tab').forEach(t => {
+          t.classList.remove('active', 'bg-amber-600', 'text-white');
+          t.classList.add('bg-gray-200', 'text-gray-700');
+        });
+        
+        tab.classList.add('active', 'bg-amber-600', 'text-white');
+        tab.classList.remove('bg-gray-200', 'text-gray-700');
+        
+        renderResults();
+      });
+    });
+
+    // Render registered students
+    function renderRegisteredStudents() {
+      const container = document.getElementById('registered-students-list');
+      
+      let filteredStudents = selectedGrade === 'all' 
+        ? registeredStudents 
+        : registeredStudents.filter(s => s.grade === selectedGrade);
+      
+      if (filteredStudents.length === 0) {
+        container.innerHTML = `<p class="text-gray-500 text-center py-8">No students registered${selectedGrade !== 'all' ? ' in ' + selectedGrade : ''}.</p>`;
+        return;
+      }
+
+      let html = '<div class="space-y-2">';
+      filteredStudents.forEach(student => {
+        const hasMarks = examRecords.some(record => record.admno === student.admno);
+        const fullName = `${student.first_name} ${student.second_name || ''} ${student.surname}`.replace(/\s+/g, ' ');
+        html += `
+          <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg hover:bg-amber-100 border border-amber-200">
+            <div class="flex-1">
+              <span class="font-bold text-amber-900 mono">${student.admno}</span> - 
+              <span class="text-gray-800 font-medium">${fullName}</span>
+              <span class="text-sm text-gray-600 ml-2 px-2 py-1 bg-white rounded">${student.grade}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              ${hasMarks ? 
+                '<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold border border-green-300">✓ Marks Entered</span>' : 
+                '<span class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-semibold border border-yellow-300">⏳ Pending</span>'
+              }
+              <button onclick="editStudent('${student.__backendId}')" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-xs font-semibold">✏️ Edit</button>
+              <button onclick="deleteStudent('${student.__backendId}')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs font-semibold">🗑️ Delete</button>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      
+      container.innerHTML = html;
+    }
+
+    // Autocomplete functionality
+    const admnoInput = document.getElementById('marks-admno');
+    const suggestionsDiv = document.getElementById('admno-suggestions');
+
+    admnoInput.addEventListener('input', (e) => {
+      const value = e.target.value.toLowerCase().trim();
+      
+      if (!value) {
+        suggestionsDiv.classList.add('hidden');
+        clearStudentFields();
+        return;
+      }
+
+      const matches = registeredStudents.filter(student => {
+        const fullName = `${student.first_name} ${student.second_name || ''} ${student.surname}`.toLowerCase();
+        return student.admno.toLowerCase().includes(value) || fullName.includes(value);
+      });
+
+      if (matches.length > 0) {
+        let html = '';
+        matches.forEach(student => {
+          const fullName = `${student.first_name} ${student.second_name || ''} ${student.surname}`.replace(/\s+/g, ' ');
+          html += `
+            <div class="autocomplete-item p-3 border-b last:border-b-0" 
+                 data-admno="${student.admno}" 
+                 data-name="${fullName}" 
+                 data-grade="${student.grade}">
+              <div class="font-bold text-gray-800 mono">${student.admno}</div>
+              <div class="text-sm text-gray-600">${fullName} - ${student.grade}</div>
+            </div>
+          `;
+        });
+        suggestionsDiv.innerHTML = html;
+        suggestionsDiv.classList.remove('hidden');
+
+        document.querySelectorAll('.autocomplete-item').forEach(item => {
+          item.addEventListener('click', () => {
+            admnoInput.value = item.dataset.admno;
+            document.getElementById('marks-student-name').value = item.dataset.name;
+            document.getElementById('marks-grade').value = item.dataset.grade;
+            suggestionsDiv.classList.add('hidden');
+          });
+        });
+      } else {
+        suggestionsDiv.classList.add('hidden');
+        clearStudentFields();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!admnoInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+        suggestionsDiv.classList.add('hidden');
+      }
+    });
+
+    function clearStudentFields() {
+      document.getElementById('marks-student-name').value = '';
+      document.getElementById('marks-grade').value = '';
+    }
+
+    // Register student form
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (isSubmitting) return;
+      
+      if (allRecords.length >= 999) {
+        showStatus('register-status', 'Maximum limit of 999 records reached.', 'error');
+        return;
+      }
+
+      const admno = document.getElementById('reg-admno').value;
+      if (registeredStudents.some(s => s.admno === admno)) {
+        showStatus('register-status', 'This admission number is already registered.', 'error');
+        return;
+      }
+
+      isSubmitting = true;
+      const submitBtn = document.getElementById('register-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Registering...';
+
+      const studentData = {
+        record_type: 'student',
+        admno: admno,
+        first_name: document.getElementById('reg-first-name').value,
+        second_name: document.getElementById('reg-second-name').value,
+        surname: document.getElementById('reg-surname').value,
+        grade: document.getElementById('reg-grade').value,
+        timestamp: new Date().toISOString()
+      };
+
+      const result = await window.dataSdk.create(studentData);
+
+      if (result.isOk) {
+        showStatus('register-status', 'Student registered successfully!', 'success');
+        document.getElementById('register-form').reset();
+      } else {
+        showStatus('register-status', 'Error registering student. Please try again.', 'error');
+      }
+
+      isSubmitting = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Register Student';
+    });
+
+    document.getElementById('register-clear-btn').addEventListener('click', () => {
+      document.getElementById('register-form').reset();
+      showStatus('register-status', '', '');
+    });
+
+    // Marks entry form
+    document.getElementById('marks-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (isSubmitting) return;
+
+      const admno = document.getElementById('marks-admno').value;
+      const studentName = document.getElementById('marks-student-name').value;
+      const grade = document.getElementById('marks-grade').value;
+
+      if (!studentName || !grade) {
+        showStatus('marks-status', 'Please select a registered student from the suggestions.', 'error');
+        return;
+      }
+
+      if (examRecords.some(record => record.admno === admno)) {
+        showStatus('marks-status', 'Marks already entered for this student.', 'error');
+        return;
+      }
+      
+      if (allRecords.length >= 999) {
+        showStatus('marks-status', 'Maximum limit of 999 records reached.', 'error');
+        return;
+      }
+
+      isSubmitting = true;
+      const submitBtn = document.getElementById('marks-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.querySelector('span').textContent = 'Saving...';
+
+      const subjects = {
+        mathematics: parseFloat(document.getElementById('mathematics').value),
+        english: parseFloat(document.getElementById('english').value),
+        kiswahili: parseFloat(document.getElementById('kiswahili').value),
+        integrated_science: parseFloat(document.getElementById('integrated-science').value),
+        agriculture: parseFloat(document.getElementById('agriculture').value),
+        social_studies: parseFloat(document.getElementById('social-studies').value),
+        cre: parseFloat(document.getElementById('cre').value),
+        creative_arts: parseFloat(document.getElementById('creative-arts').value),
+        pre_technical: parseFloat(document.getElementById('pre-technical').value)
+      };
+
+      const total = Object.values(subjects).reduce((sum, val) => sum + val, 0);
+      const average = parseFloat((total / 9).toFixed(1));
+      
+      let totalPoints = 0;
+      Object.values(subjects).forEach(score => {
+        totalPoints += calculateCBCGrade(score).points;
+      });
+
+      const gradeInfo = calculateCBCGrade(average);
+
+      const marksData = {
+        record_type: 'exam',
+        admno: admno,
+        first_name: studentName.split(' ')[0],
+        second_name: studentName.split(' ')[1] || '',
+        surname: studentName.split(' ').slice(2).join(' ') || studentName.split(' ')[1] || '',
+        grade: grade,
+        ...subjects,
+        total_marks: total,
+        total_points: totalPoints,
+        average: average,
+        grade_code: gradeInfo.code,
+        timestamp: new Date().toISOString()
+      };
+
+      const result = await window.dataSdk.create(marksData);
+
+      if (result.isOk) {
+        showStatus('marks-status', 'Student marks saved successfully!', 'success');
+        document.getElementById('marks-form').reset();
+        clearStudentFields();
+        updateCalculations();
+      } else {
+        showStatus('marks-status', 'Error saving marks. Please try again.', 'error');
+      }
+
+      isSubmitting = false;
+      submitBtn.disabled = false;
+      submitBtn.querySelector('span').textContent = window.elementSdk?.config?.submit_button_text || defaultConfig.submit_button_text;
+    });
+
+    document.getElementById('marks-clear-btn').addEventListener('click', () => {
+      document.getElementById('marks-form').reset();
+      clearStudentFields();
+      updateCalculations();
+      showStatus('marks-status', '', '');
+    });
+
+    // Render results
+    function renderResults() {
+      const container = document.getElementById('results-container');
+      
+      let filteredRecords = selectedResultsGrade === 'all' 
+        ? examRecords 
+        : examRecords.filter(r => r.grade === selectedResultsGrade);
+      
+      if (filteredRecords.length === 0) {
+        container.innerHTML = `<p class="text-gray-500 text-center py-8">No marks entered${selectedResultsGrade !== 'all' ? ' for ' + selectedResultsGrade : ''}.</p>`;
+        return;
+      }
+
+      const sorted = [...filteredRecords].sort((a, b) => b.average - a.average);
+
+      let html = `
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr class="bg-gradient-to-r from-amber-700 to-orange-700 text-white">
+              <th class="px-3 py-3 text-left">Rank</th>
+              <th class="px-3 py-3 text-left">Adm No</th>
+              <th class="px-3 py-3 text-left">Student Name</th>
+              <th class="px-3 py-3 text-center">Grade</th>
+              <th class="px-3 py-3 text-center">Eng</th>
+              <th class="px-3 py-3 text-center">Kis</th>
+              <th class="px-3 py-3 text-center">Math</th>
+              <th class="px-3 py-3 text-center">Sci</th>
+              <th class="px-3 py-3 text-center">Agr</th>
+              <th class="px-3 py-3 text-center">SST</th>
+              <th class="px-3 py-3 text-center">CRE</th>
+              <th class="px-3 py-3 text-center">CA&S</th>
+              <th class="px-3 py-3 text-center">PTS</th>
+              <th class="px-3 py-3 text-center">Total</th>
+              <th class="px-3 py-3 text-center">Avg</th>
+              <th class="px-3 py-3 text-center">Points</th>
+              <th class="px-3 py-3 text-center">Grade</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      sorted.forEach((student, index) => {
+        const rowClass = index % 2 === 0 ? 'bg-amber-50' : 'bg-white';
+        const fullName = `${student.first_name} ${student.second_name || ''} ${student.surname}`.replace(/\s+/g, ' ');
+        html += `
+          <tr class="${rowClass} border-b hover:bg-amber-100">
+            <td class="px-3 py-2 font-bold text-amber-900">${index + 1}</td>
+            <td class="px-3 py-2 mono">${student.admno}</td>
+            <td class="px-3 py-2 font-medium">${fullName}</td>
+            <td class="px-3 py-2 text-center mono">${student.grade}</td>
+            <td class="px-3 py-2 text-center mono">${student.english}</td>
+            <td class="px-3 py-2 text-center mono">${student.kiswahili}</td>
+            <td class="px-3 py-2 text-center mono">${student.mathematics}</td>
+            <td class="px-3 py-2 text-center mono">${student.integrated_science}</td>
+            <td class="px-3 py-2 text-center mono">${student.agriculture}</td>
+            <td class="px-3 py-2 text-center mono">${student.social_studies}</td>
+            <td class="px-3 py-2 text-center mono">${student.cre}</td>
+            <td class="px-3 py-2 text-center mono">${student.creative_arts}</td>
+            <td class="px-3 py-2 text-center mono">${student.pre_technical}</td>
+            <td class="px-3 py-2 text-center font-bold mono">${student.total_marks}</td>
+            <td class="px-3 py-2 text-center font-bold mono">${student.average}</td>
+            <td class="px-3 py-2 text-center font-bold mono">${student.total_points}</td>
+            <td class="px-3 py-2 text-center">
+              <span class="inline-block px-2 py-1 rounded font-bold border-2 mono ${getGradeColor(student.grade_code)}">${student.grade_code}</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    // Print/PDF functionality
+    document.getElementById('print-pdf-btn').addEventListener('click', () => {
+      if (examRecords.length === 0) {
+        showModal('No Records Available', 'There are no exam records to print. Please enter marks first.', 'error');
+        return;
+      }
+
+      const schoolName = window.elementSdk?.config?.school_name || defaultConfig.school_name;
+      const examTitle = window.elementSdk?.config?.exam_title || defaultConfig.exam_title;
+      const gradeInfo = selectedResultsGrade === 'all' ? 'All Grades' : selectedResultsGrade;
+      const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      document.getElementById('print-school-name').textContent = schoolName;
+      document.getElementById('print-exam-title').textContent = examTitle + ' - Results';
+      document.getElementById('print-grade-info').textContent = gradeInfo;
+      document.getElementById('print-date').textContent = 'Generated on: ' + date;
+
+      document.getElementById('print-header').style.display = 'block';
+
+      window.print();
+
+      setTimeout(() => {
+        document.getElementById('print-header').style.display = 'none';
+      }, 1000);
+    });
+
+    // Print Students functionality
+    document.getElementById('print-students-btn').addEventListener('click', () => {
+      if (registeredStudents.length === 0) {
+        showModal('No Students Available', 'There are no registered students to print. Please register students first.', 'error');
+        return;
+      }
+
+      const schoolName = window.elementSdk?.config?.school_name || defaultConfig.school_name;
+      const gradeInfo = selectedGrade === 'all' ? 'All Grades' : selectedGrade;
+      const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      document.getElementById('print-school-name').textContent = schoolName;
+      document.getElementById('print-exam-title').textContent = 'Registered Students';
+      document.getElementById('print-grade-info').textContent = gradeInfo;
+      document.getElementById('print-date').textContent = 'Generated on: ' + date;
+
+      document.getElementById('print-header').style.display = 'block';
+
+      window.print();
+
+      setTimeout(() => {
+        document.getElementById('print-header').style.display = 'none';
+      }, 1000);
+    });
+
+    // Export Students to Excel
+    document.getElementById('export-students-btn').addEventListener('click', () => {
+      if (registeredStudents.length === 0) {
+        showModal('No Students Available', 'There are no registered students to export. Please register students first.', 'error');
+        return;
+      }
+      
+      try {
+        const filteredData = selectedGrade === 'all' 
+          ? registeredStudents 
+          : registeredStudents.filter(s => s.grade === selectedGrade);
+        
+        const exportData = filteredData.map((student, index) => ({
+          'No.': index + 1,
+          'Admission No': student.admno,
+          'First Name': student.first_name,
+          'Second Name': student.second_name || '',
+          'Surname': student.surname,
+          'Grade': student.grade,
+          'Status': examRecords.some(record => record.admno === student.admno) ? 'Marks Entered' : 'Pending'
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(exportData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Students');
+        
+        const schoolName = window.elementSdk?.config?.school_name || defaultConfig.school_name;
+        const gradeLabel = selectedGrade === 'all' ? 'All' : selectedGrade.replace(' ', '_');
+        const fileName = `${schoolName.replace(/\s+/g, '_')}_${gradeLabel}_Students_${new Date().toISOString().split('T')[0]}.xlsx`;
+        
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showModal('Export Successful!', `Students list is downloading as: ${fileName}`, 'success');
+      } catch (error) {
+        console.error('Export error:', error);
+        showModal('Export Failed', 'Failed to export students. Please try again.', 'error');
+      }
+    });
+
+    // Export Results to Excel
+    document.getElementById('export-excel-btn').addEventListener('click', () => {
+      if (examRecords.length === 0) {
+        showModal('No Records Available', 'There are no exam records to export. Please enter marks first.', 'error');
+        return;
+      }
+      
+      try {
+        const filteredData = selectedResultsGrade === 'all' 
+          ? examRecords 
+          : examRecords.filter(r => r.grade === selectedResultsGrade);
+        
+        const sorted = [...filteredData].sort((a, b) => b.average - a.average);
+        
+        const exportData = sorted.map((student, index) => ({
+          'Rank': index + 1,
+          'Admission No': student.admno,
+          'First Name': student.first_name,
+          'Second Name': student.second_name || '',
+          'Surname': student.surname,
+          'Grade': student.grade,
+          'English': student.english,
+          'Kiswahili': student.kiswahili,
+          'Mathematics': student.mathematics,
+          'Integrated Science': student.integrated_science,
+          'Agriculture': student.agriculture,
+          'Social Studies': student.social_studies,
+          'CRE': student.cre,
+          'Creative Arts & Sports': student.creative_arts,
+          'Pre-technical Studies': student.pre_technical,
+          'Total Marks': student.total_marks,
+          'Average': student.average,
+          'Total Points': student.total_points,
+          'Grade Code': student.grade_code
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(exportData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Results');
+        
+        const schoolName = window.elementSdk?.config?.school_name || defaultConfig.school_name;
+        const gradeLabel = selectedResultsGrade === 'all' ? 'All' : selectedResultsGrade.replace(' ', '_');
+        const fileName = `${schoolName.replace(/\s+/g, '_')}_${gradeLabel}_Results_${new Date().toISOString().split('T')[0]}.xlsx`;
+        
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showModal('Export Successful!', `Results are downloading as: ${fileName}`, 'success');
+      } catch (error) {
+        console.error('Export error:', error);
+        showModal('Export Failed', 'Failed to export results. Please try again.', 'error');
+      }
+    });
+
+    // Helper function to show modal
+    function showModal(title, message, type) {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+      const colorClass = type === 'success' ? 'text-green-700' : type === 'error' ? 'text-red-700' : 'text-amber-700';
+      modal.innerHTML = `
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4">
+          <h3 class="text-xl font-bold ${colorClass} mb-3">${type === 'success' ? '✅' : '❌'} ${title}</h3>
+          <p class="text-gray-700 mb-4">${message}</p>
+          <button class="bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 w-full">Close</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      modal.querySelector('button').addEventListener('click', () => modal.remove());
+    }
+
+    // Edit Student Function
+    window.editStudent = function(backendId) {
+      const student = registeredStudents.find(s => s.__backendId === backendId);
+      if (!student) return;
+
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4">
+          <h3 class="text-2xl font-bold text-amber-900 mb-4">✏️ Edit Student</h3>
+          <form id="edit-student-form" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Admission Number</label>
+                <input type="text" id="edit-admno" value="${student.admno}" required 
+                  class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <input type="text" id="edit-first-name" value="${student.first_name}" required 
+                  class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Second Name</label>
+                <input type="text" id="edit-second-name" value="${student.second_name || ''}" 
+                  class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Surname</label>
+                <input type="text" id="edit-surname" value="${student.surname}" required 
+                  class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+                <select id="edit-grade" required 
+                  class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500">
+                  <option value="Grade 1" ${student.grade === 'Grade 1' ? 'selected' : ''}>Grade 1</option>
+                  <option value="Grade 2" ${student.grade === 'Grade 2' ? 'selected' : ''}>Grade 2</option>
+                  <option value="Grade 3" ${student.grade === 'Grade 3' ? 'selected' : ''}>Grade 3</option>
+                  <option value="Grade 4" ${student.grade === 'Grade 4' ? 'selected' : ''}>Grade 4</option>
+                  <option value="Grade 5" ${student.grade === 'Grade 5' ? 'selected' : ''}>Grade 5</option>
+                  <option value="Grade 6" ${student.grade === 'Grade 6' ? 'selected' : ''}>Grade 6</option>
+                  <option value="Grade 7" ${student.grade === 'Grade 7' ? 'selected' : ''}>Grade 7</option>
+                  <option value="Grade 8" ${student.grade === 'Grade 8' ? 'selected' : ''}>Grade 8</option>
+                  <option value="Grade 9" ${student.grade === 'Grade 9' ? 'selected' : ''}>Grade 9</option>
+                </select>
+              </div>
+            </div>
+            <div id="edit-status" class="text-center text-sm font-medium"></div>
+            <div class="flex gap-3">
+              <button type="submit" class="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700">
+                Save Changes
+              </button>
+              <button type="button" id="edit-cancel-btn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      document.getElementById('edit-cancel-btn').addEventListener('click', () => modal.remove());
+
+      document.getElementById('edit-student-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const newAdmno = document.getElementById('edit-admno').value;
+        
+        if (newAdmno !== student.admno && registeredStudents.some(s => s.admno === newAdmno)) {
+          document.getElementById('edit-status').innerHTML = 'This admission number is already registered.';
+          document.getElementById('edit-status').className = 'text-center text-sm font-medium text-red-600';
+          return;
+        }
+
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+
+        const updatedStudent = {
+          ...student,
+          admno: newAdmno,
+          first_name: document.getElementById('edit-first-name').value,
+          second_name: document.getElementById('edit-second-name').value,
+          surname: document.getElementById('edit-surname').value,
+          grade: document.getElementById('edit-grade').value
+        };
+
+        const result = await window.dataSdk.update(updatedStudent);
+
+        if (result.isOk) {
+          showModal('Success!', 'Student updated successfully!', 'success');
+          modal.remove();
+        } else {
+          document.getElementById('edit-status').innerHTML = 'Error updating student. Please try again.';
+          document.getElementById('edit-status').className = 'text-center text-sm font-medium text-red-600';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Save Changes';
+        }
+      });
+    };
+
+    // Delete Student Function
+    window.deleteStudent = function(backendId) {
+      const student = registeredStudents.find(s => s.__backendId === backendId);
+      if (!student) return;
+
+      const fullName = `${student.first_name} ${student.second_name || ''} ${student.surname}`.replace(/\s+/g, ' ');
+      const hasMarks = examRecords.some(record => record.admno === student.admno);
+
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4">
+          <h3 class="text-xl font-bold text-red-700 mb-3">⚠️ Confirm Delete</h3>
+          <p class="text-gray-700 mb-2">Are you sure you want to delete this student?</p>
+          <div class="bg-amber-50 p-3 rounded-lg mb-4 border border-amber-200">
+            <p class="font-semibold">${fullName}</p>
+            <p class="text-sm text-gray-600">Admission No: ${student.admno}</p>
+            <p class="text-sm text-gray-600">Grade: ${student.grade}</p>
+          </div>
+          ${hasMarks ? '<p class="text-red-600 text-sm font-semibold mb-4">⚠️ Warning: This student has exam marks recorded!</p>' : ''}
+          <div id="delete-status" class="text-center text-sm font-medium mb-3"></div>
+          <div class="flex gap-3">
+            <button id="confirm-delete-btn" class="flex-1 bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700">
+              Delete Student
+            </button>
+            <button id="cancel-delete-btn" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300">
+              Cancel
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      document.getElementById('cancel-delete-btn').addEventListener('click', () => modal.remove());
+
+      document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+        const deleteBtn = document.getElementById('confirm-delete-btn');
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting...';
+
+        const result = await window.dataSdk.delete(student);
+
+        if (result.isOk) {
+          showModal('Success!', 'Student deleted successfully!', 'success');
+          modal.remove();
+        } else {
+          document.getElementById('delete-status').innerHTML = 'Error deleting student. Please try again.';
+          document.getElementById('delete-status').className = 'text-center text-sm font-medium text-red-600';
+          deleteBtn.disabled = false;
+          deleteBtn.textContent = 'Delete Student';
+        }
+      });
+    };
+
+    // Status message
+    function showStatus(elementId, message, type) {
+      const statusEl = document.getElementById(elementId);
+      statusEl.innerHTML = message;
+      statusEl.className = `text-center text-sm font-medium ${
+        type === 'success' ? 'text-green-600' : 
+        type === 'error' ? 'text-red-600' : 
+        type === 'info' ? 'text-blue-600' : ''
+      }`;
+      if (message && type !== 'info') {
+        setTimeout(() => showStatus(elementId, '', ''), 4000);
+      }
+    }
+
+    // Listen to mark inputs
+    ['english', 'kiswahili', 'mathematics', 'integrated-science', 'agriculture', 'social-studies', 'cre', 'creative-arts', 'pre-technical'].forEach(subject => {
+      const element = document.getElementById(subject);
+      if (element) {
+        element.addEventListener('input', updateCalculations);
+      }
+    });
+
+    // Data SDK Handler
+    const dataHandler = {
+      onDataChanged(data) {
+        allRecords = data;
+        registeredStudents = data.filter(record => record.record_type === 'student');
+        examRecords = data.filter(record => record.record_type === 'exam');
+        
+        renderRegisteredStudents();
+        renderResults();
+      }
+    };
+
+    // Element SDK Implementation
+    async function onConfigChange(config) {
+      const schoolTitle = config.school_name || defaultConfig.school_name;
+      const examTitle = config.exam_title || defaultConfig.exam_title;
+      const submitText = config.submit_button_text || defaultConfig.submit_button_text;
+      const printText = config.print_button_text || defaultConfig.print_button_text;
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontSize = config.font_size || defaultConfig.font_size;
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+
+      document.getElementById('school-title').textContent = schoolTitle;
+      document.getElementById('exam-subtitle').textContent = examTitle;
+      
+      const submitTextEl = document.getElementById('submit-text');
+      if (submitTextEl) submitTextEl.textContent = submitText;
+      
+      const printTextEl = document.getElementById('print-text');
+      if (printTextEl) printTextEl.textContent = printText;
+
+      const baseFontStack = 'system-ui, sans-serif';
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+
+      document.getElementById('school-title').style.fontSize = `${baseFontSize * 2}px`;
+      document.getElementById('exam-subtitle').style.fontSize = `${baseFontSize * 1.125}px`;
+
+      document.body.style.color = textColor;
+      document.getElementById('app').style.background = `linear-gradient(to bottom right, ${surfaceColor}, ${primaryColor}30)`;
+      
+      const whiteBoxes = document.querySelectorAll('.bg-white');
+      whiteBoxes.forEach(box => box.style.backgroundColor = secondaryColor);
+
+      const amberButtons = document.querySelectorAll('.bg-amber-600');
+      amberButtons.forEach(btn => btn.style.backgroundColor = primaryColor);
+
+      document.getElementById('export-excel-btn').style.backgroundColor = accentColor;
+    }
+
+    // Initialize SDKs
+    async function initializeApp() {
+      const dataResult = await window.dataSdk.init(dataHandler);
+      if (!dataResult.isOk) {
+        console.error('Failed to initialize data SDK');
+      }
+
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities: (config) => ({
+            recolorables: [
+              {
+                get: () => config.primary_color || defaultConfig.primary_color,
+                set: (value) => {
+                  config.primary_color = value;
+                  window.elementSdk.setConfig({ primary_color: value });
+                }
+              },
+              {
+                get: () => config.secondary_color || defaultConfig.secondary_color,
+                set: (value) => {
+                  config.secondary_color = value;
+                  window.elementSdk.setConfig({ secondary_color: value });
+                }
+              },
+              {
+                get: () => config.text_color || defaultConfig.text_color,
+                set: (value) => {
+                  config.text_color = value;
+                  window.elementSdk.setConfig({ text_color: value });
+                }
+              },
+              {
+                get: () => config.accent_color || defaultConfig.accent_color,
+                set: (value) => {
+                  config.accent_color = value;
+                  window.elementSdk.setConfig({ accent_color: value });
+                }
+              },
+              {
+                get: () => config.surface_color || defaultConfig.surface_color,
+                set: (value) => {
+                  config.surface_color = value;
+                  window.elementSdk.setConfig({ surface_color: value });
+                }
+              }
+            ],
+            borderables: [],
+            fontEditable: {
+              get: () => config.font_family || defaultConfig.font_family,
+              set: (value) => {
+                config.font_family = value;
+                window.elementSdk.setConfig({ font_family: value });
+              }
+            },
+            fontSizeable: {
+              get: () => config.font_size || defaultConfig.font_size,
+              set: (value) => {
+                config.font_size = value;
+                window.elementSdk.setConfig({ font_size: value });
+              }
+            }
+          }),
+          mapToEditPanelValues: (config) => new Map([
+            ['school_name', config.school_name || defaultConfig.school_name],
+            ['exam_title', config.exam_title || defaultConfig.exam_title],
+            ['submit_button_text', config.submit_button_text || defaultConfig.submit_button_text],
+            ['print_button_text', config.print_button_text || defaultConfig.print_button_text]
+          ])
+        });
+      }
+    }
+
+    initializeApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9be84a2f772d8a65',t:'MTc2ODUxMDY5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

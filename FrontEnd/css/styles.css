@@ -6,6 +6,22 @@ p { overflow-wrap: anywhere; }
 /* Make all media scale within containers on small screens */
 img, svg, video, canvas { max-width: 100%; height: auto; }
 
+
+/* img section */
+.img-section {
+  background-image: url(../images/school1.jpg);
+  background-repeat: no-repeat;
+  height: 300px;
+  background-size: cover;
+  border: green solid ;
+  
+}
+
+.contact-text {
+  font-size: 100px;
+  color: green;
+}
+
 /* Carousel image fit */
 .carousel-item {
   position: relative;
