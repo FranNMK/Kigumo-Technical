@@ -152,6 +152,26 @@
     display: inline-block !important;
   }
 }
+/* --- FINAL: Ensure .carousel-tag (school name) is always visible and fits on mobile --- */
+@media (max-width: 767.98px) {
+  .carousel-tag {
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+    color: #fff !important;
+    background: rgba(0,0,0,0.7) !important;
+    border-radius: 0.5em !important;
+    padding: 0.18em 0.6em !important;
+    margin-bottom: 0.5em !important;
+    max-width: 92vw !important;
+    white-space: nowrap !important;
+    overflow: auto !important;
+    text-overflow: initial !important;
+    text-align: center !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18) !important;
+    display: block !important;
+    line-height: 1.2 !important;
+  }
+}
 /* --- Responsive Fixes for Carousel and Navbar --- */
 @media (max-width: 991.98px) {
   .navbar .container-fluid {
