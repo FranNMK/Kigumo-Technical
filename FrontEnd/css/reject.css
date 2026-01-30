@@ -376,12 +376,7 @@
   display: inline;
   font-size: inherit;
   font-weight: inherit;
-}
-.carousel-tag:hover {
-  background: #ffc107;
-  color: #1e7e34;
-  box-shadow: 0 4px 16px rgba(255,193,7,0.18);
-}
+
 /* Brighter carousel text for visibility */
 .carousel-title {
   color: #ffc107 !important; /* bright yellow */

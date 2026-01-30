@@ -859,7 +859,9 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 
 }
 
+}
 .carousel-tag:hover {
-  background-color: yellow;
-  color: white;
+  background: #ffc107;
+  color: #1e7e34;
+  box-shadow: 0 4px 16px rgba(255,193,7,0.18);
 }
