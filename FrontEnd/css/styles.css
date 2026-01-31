@@ -865,3 +865,37 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
   color: #1e7e34;
   box-shadow: 0 4px 16px rgba(255,193,7,0.18);
 }
+
+.login {
+  margin-left: 10px;
+
+}
+
+.login:hover {
+  background-color: yellow;
+  color: green;
+}
+
+.dropdown-item:hover {
+  background-color: greenyellow;
+
+}
+
+.nav-item:hover {
+  background-color: green;
+  color: white;
+  text-transform:inherit;
+
+}
+
+.parners-text {
+  background-color: greenyellow;
+}
+
+.kasned {
+  background-color: white;
+}
+
+.parner {
+  
+}
