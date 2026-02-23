@@ -31,13 +31,45 @@ async function loadComponent(elementId, filePath) {
     const element = document.getElementById(elementId);
     if (element) {
       element.innerHTML = html;
-      
       // Fix paths in loaded content
       fixComponentPaths(element);
+
+      // Special: If navbar loaded, enable toggler animation
+      if (elementId === 'navbar-placeholder') {
+        enableCustomNavbarToggler();
+      }
     }
   } catch (error) {
     console.error(`Error loading component from ${filePath}:`, error);
   }
+}
+
+// Enable animated hamburger/X toggler
+function enableCustomNavbarToggler() {
+  var toggler = document.querySelector('.custom-toggler');
+  var collapse = document.getElementById('mainNavCollapse');
+  if (!toggler || !collapse) return;
+
+
+  // Always start with collapsed class
+  toggler.classList.add('collapsed');
+
+  // Use Bootstrap collapse events for reliability
+  collapse.addEventListener('show.bs.collapse', function () {
+    toggler.classList.remove('collapsed');
+  });
+  collapse.addEventListener('hide.bs.collapse', function () {
+    toggler.classList.add('collapsed');
+  });
+
+  // Also close on nav link click (for single page nav)
+  collapse.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth < 992 && collapse.classList.contains('show')) {
+        toggler.click();
+      }
+    });
+  });
 }
 
 // Fix image and link paths based on current page location
@@ -109,7 +141,11 @@ function getComponentPath(componentFile) {
 document.addEventListener('DOMContentLoaded', function() {
   const navbarPath = getComponentPath('navbar.html');
   const footerPath = getComponentPath('footer.html');
+  const topnavpath = getComponentPath('../components/topbar.html');
+
   
+  loadComponent('topbar-placeholder', topnavpath);
   loadComponent('navbar-placeholder', navbarPath);
   loadComponent('footer-placeholder', footerPath);
 });
+

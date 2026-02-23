@@ -22,6 +22,8 @@
 
 <body>
 
+  <!-- Topbar Placeholder -->
+  <div id="topbar-placeholder"></div>
   <!-- Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
 
@@ -91,17 +93,53 @@
     </div>
   </div>
 
+  <!-- Principal's Message Section -->
+  <section class="container principal-message-section my-5">
+    <div class="row align-items-center shadow rounded-4 p-4" style="background: #eaf8fa;">
+      <div class="col-md-3 text-center mb-3 mb-md-0">
+        <img src="./FrontEnd/images/PRINCIPAL.jpg" alt="Principal Photo" class="img-fluid rounded-3 shadow-sm"
+          style="max-width: 220px; min-width: 120px;">
+      </div>
+      <div class="col-md-9">
+        <h2 class="fw-bold" style="color: #008060;">A Message from the Principal</h2>
+        <p>On behalf of the Kigumo Technical and Vocational College Council, Management, and the entire KTVC fraternity,
+          I take this opportunity to welcome you to this institution.</p>
+        <p>Additionally, I welcome you to the KTVC Website Platform, which facilitates the communication and sharing of
+          information, knowledge, skills, and best practices within the College and with all our stakeholders.</p>
+        <p class="fst-italic mb-0" style="color: #555;">– <b>Madam Jannefer</b><br>
+          Chief Principal & Secretary to the Council<br>
+          Kigumo Technical and Vocational College</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="container-xxl cta-apply-section text-center my-5">
+    <h2 class="fw-bold mb-4" style="font-size:2.5rem; color:#28a745;">
+      Would you like to join us <span style="color:#c3c800;">Today</span>
+    </h2>
+    <div class="cta-apply-underline mx-auto mb-4" style="background: linear-gradient(90deg, #28a745 60%, #c3c800 100%);"></div>
+    <p class="lead mb-2" style="color:#222;max-width:800px;margin:auto;">
+      We are thrilled to introduce our brand-new application system! This marks a significant step forward in providing you with a seamless and user-friendly experience as you begin your academic journey with us.
+    </p>
+    <p class="mb-4" style="color:#222;max-width:800px;margin:auto;">
+      Our new system is designed with you in mind, offering a streamlined process that is both efficient and accessible. Whether you’re applying for your first course or furthering your education, you can now complete your application with ease from any device.
+    </p>
+    <a href="#admissions" class="cta-apply-btn brand-btn">APPLY NOW</a>
+  </section>
+
+
 
 
   <!-- Welcome & Mission Section -->
-  <section class="container py-5 text-center homepage-highlight">
+  <!-- <section class="container py-5 text-center homepage-highlight">
     <h2 class="homepage-section-title">Welcome to Kigumo Technical & Vocational College</h2>
     <p class="homepage-section-subtitle">Empowering students with practical skills for a brighter future.</p>
     <p class="mb-4">Our mission is to provide quality technical education, foster innovation, and prepare graduates for
       success in a dynamic world.</p>
     <a href="#admissions" class="btn btn-success btn-lg mx-2">Apply Now</a>
     <a href="#programmes" class="btn btn-warning btn-lg mx-2">View Programmes</a>
-  </section>
+  </section> -->
 
   <!-- About Kigumo Section (New) -->
   <section class="container about-kigumo">
@@ -233,13 +271,13 @@
     </div>
   </div>
 
-  <!-- Footer Placeholder -->
+  <!-- Footer Placeholder
   <div id="footer-placeholder">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-white-50">
-      <span>&copy; <span id="year"></span> Kigumo Technical And Vocational College. All rights reserved.</span>
-      <!-- <span>Designed with Bootstrap 5</span> -->
-    </div>
-  </div>
+    
+  </div> -->
+
+   <!-- Footer Placeholder -->
+  <div id="footer-placeholder"></div>
 
 
   <!-- Bootstrap JS -->
@@ -248,6 +286,16 @@
     crossorigin="anonymous"></script>
   <!-- Component Loader -->
   <script src="FrontEnd/js/components.js"></script>
+  <!-- <script>
+    // Loader for topbar component
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('FrontEnd/components/topbar.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('topbar-placeholder').innerHTML = data;
+        });
+    });
+  </script> -->
   <!-- Custom JS -->
   <script type="module" src="FrontEnd/js/main.js"></script>
 
